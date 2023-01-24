@@ -11,7 +11,7 @@ function cachingDecoratorNew(func) {
         }
   
         let result = func(...args); // в кеше результата нет — придётся считать
-        cache.push({hash: md5([...args]), value: result}) ; // добавляем элемент с правильной структурой
+        cache.push({hash: hash, value: result}) ; // добавляем элемент с правильной структурой
         if (cache.length > 5) { 
           cache.shift(); // если слишком много элементов в кеше, надо удалить самый старый (первый) 
         }
@@ -22,32 +22,11 @@ function cachingDecoratorNew(func) {
 }
 
 //Задача № 2
-// function debounceDecoratorNew(func, delay) {
-//   function wrapper(...args) {
-//     wrapper.allCount++;
-//     let timeoutId = null;
-//     return function(...args){
-//         if (!timeoutId) {
-//             console.log(func(...args));
-//         }
-//         clearTimeout(timeoutId);
-//         timeoutId = setTimeout(() => {
-//             timeoutId = null;
-//             wrapper.count++;
-//             console.log(func(...args));
-//         }, delay);
-//     }
-//   }
-// wrapper.count = 0;
-// wrapper.allCount = 0;
-// return wrapper;
-// }
 
 function debounceDecoratorNew(func, delay) {
   let timeoutId;
   function wrapper(...args) {
     wrapper.allCount++;
-    return function(...args){
       clearTimeout(timeoutId);
         if (!timeoutId) {
             func(...args);
@@ -58,7 +37,6 @@ function debounceDecoratorNew(func, delay) {
             func(...args);
         }, delay);
     }
-  }
 wrapper.count = 0;
 wrapper.allCount = 0;
 return wrapper;
